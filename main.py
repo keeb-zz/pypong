@@ -22,6 +22,11 @@ class entity:
     def position(self):
         return (self.x, self.y)
 
+    def render(self, scr):
+        scr.attrset(curses.color_pair(1))
+        scr.addch(self.y, self.x, ' ')
+
+
 class ai(entity):
     def __init__(self):
         entity.__init__(self)
@@ -33,6 +38,15 @@ class ai(entity):
             return
         self.move_vert(y)
 
+class ball(entity):
+    def __init__(self):
+        entity.__init__(self)
+
+    def render(self, scr):
+        """ override base class """
+        print 'ball'
+        scr.attrset(curses.color_pair(2))
+        scr.addch(srlf.y, self.x, ' ')
 
 
 def init_colors():
@@ -43,9 +57,8 @@ def init_colors():
 def main(scr):
 
     init_colors()
-
-    curses.curs_set(0)
-    scr.nodelay(1)
+    curses.curs_set(0) # turn off the cursor
+    scr.nodelay(1) # do not block on getch()
 
     # set up
     b1 = entity()
@@ -57,40 +70,32 @@ def main(scr):
 
     ball = entity()
     ball.name = 'ball'
+    ball.x = 10
+    ball.y = 10
+    
 
-    entity_list = [b1, b2, ball]
 
     # main loop
     while True:
-
         scr.clear()
-        render(scr, entity_list[0])
-        render(scr, entity_list[1])
-
         # update the ai
-        entity_list[1].smart_move()
+        b2.smart_move()
+
+        b2.render(scr)
+        b1.render(scr)
+        ball.render(scr)
+
         # move ball
 
         # allow the person to move
         ch = scr.getch()
-        #print ch
-        if ch == 259: entity_list[0].move_vert(-1)
-        if ch == 258: entity_list[0].move_vert(1)
-
-        # show it on the screen!
+        if ch == 259: b1.move_vert(-1)
+        if ch == 258: b1.move_vert(1)
         
         # frame rate, duh
         scr.refresh()
-        time.sleep(0.01)
+        time.sleep(0.02)
 
-
-
-def render(scr, item):
-    scr.attrset(curses.color_pair(1))
-    #try:
-    scr.addch(item.y, item.x, ' ')
-    #except Exception, e: print e
-    #print 'drawing %s at %d,%d' % (item.name, item.x, item.y)
 
 
 if __name__=="__main__":
