@@ -45,6 +45,7 @@ def main(scr):
     init_colors()
 
     curses.curs_set(0)
+    scr.nodelay(1)
 
     # set up
     b1 = entity()
