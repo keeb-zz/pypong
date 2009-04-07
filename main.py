@@ -33,10 +33,8 @@ class ai(entity):
 
     def smart_move(self):
         #not very smart
-        y = random.randint(-1, 1)
-        if self.y + y < 0:
-            return
-        self.move_vert(y)
+        # completely random
+        pass
 
 class ball(entity):
     def __init__(self):
@@ -44,9 +42,8 @@ class ball(entity):
 
     def render(self, scr):
         """ override base class """
-        print 'ball'
         scr.attrset(curses.color_pair(2))
-        scr.addch(srlf.y, self.x, ' ')
+        scr.addch(self.y, self.x, ' ')
 
 
 def init_colors():
@@ -63,15 +60,17 @@ def main(scr):
     # set up
     b1 = entity()
     b1.name = 'p1'
+    b1.y = 5
 
     b2 = ai()
     b2.name = 'p2'
     b2.x = 20
+    b2.y = 5
 
-    ball = entity()
-    ball.name = 'ball'
-    ball.x = 10
-    ball.y = 10
+    b = ball()
+    b.name = 'ball'
+    b.x = 10
+    b.y = 5
     
 
 
@@ -83,7 +82,7 @@ def main(scr):
 
         b2.render(scr)
         b1.render(scr)
-        ball.render(scr)
+        b.render(scr)
 
         # move ball
 
